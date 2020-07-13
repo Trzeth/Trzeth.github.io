@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://trzeth.github.io/"/>
+  <updated>2020-07-13T16:20:06.191Z</updated>
+  <id>https://trzeth.github.io/</id>
+  
+  <author>
+    <name>Trzeth</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://trzeth.github.io/2020/07/13/hello-world/"/>
+    <id>https://trzeth.github.io/2020/07/13/hello-world/</id>
+    <published>2020-07-13T23:26:17.000Z</published>
+    <updated>2020-07-13T16:20:06.191Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;暑假已经开始了两周了。&lt;br&gt;开学就已经大三的我终于想起来应该做些什么了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;博客是作为一个&lt;strong&gt;我今晚实在不想调研的理由&lt;/strong&gt;才搭的。一个已经不知道拖了多久的东西，还是要找理由拖下去。
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Life" scheme="https://trzeth.github.io/categories/Life/"/>
+    
+    
+      <category term="HelloWorld" scheme="https://trzeth.github.io/tags/HelloWorld/"/>
+    
+  </entry>
+  
+</feed>
