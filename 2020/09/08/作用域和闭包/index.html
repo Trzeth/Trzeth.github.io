@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Trzeth"><title>作用域和闭包 · t's Dream Hole</title><meta name="description" content="《你所不知道的 JavaScript 上卷》 第一部分 作用域和闭包《JavaScript 设计模式与开发实践》
+
+作用域语法作用域：在编写代码时给代码定义的附属作用域，在运行时保持不变。（使用 with 可以改变， eval 可以插入代码进行欺骗）
+函数作用域：创建函数时会创建一个可用于变量绑定的"><meta name="keywords" content=""><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">希望都能实现</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">t's 幻想坑</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/categories">分类</a></li><li><a href="/tags">标签</a></li><li class="soc"><a href="https://github.com/trzeth" target="_blank" rel="noopener noreferrer"><i class="fa fa-github">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2020&nbsp;<a target="_blank" href="https://trzeth.github.io" rel="noopener noreferrer">Trzeth</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>作用域和闭包</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2020-09-08</span><span class="meta-item"><i class="fa fa-folder"></i><span>&nbsp;</span><a href="/categories/Learning/" title="Learning" class="a-tag">Learning</a><span>&nbsp;</span><a href="/categories/Learning/JavaScript/" title="JavaScript" class="a-tag">JavaScript</a><span>&nbsp;</span></span></p><p class="post-abstract"><blockquote>
+<p>《你所不知道的 JavaScript 上卷》 第一部分 作用域和闭包<br>《JavaScript 设计模式与开发实践》</p>
+</blockquote>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>语法作用域：在编写代码时给<strong>代码定义的附属作用域</strong>，<strong>在运行时保持不变</strong>。（使用 with 可以改变， eval 可以插入代码进行欺骗）</p>
+<p>函数作用域：创建函数时会<strong>创建一个可用于变量绑定的作用域</strong>。</p>
+<p>块作用域：JavaScript if(){ .. } for(){ .. } 不会创建块作用域。仅 try/catch ES3+ 具有块作用域。在 ES6 中可以使用 let 将变量定义绑定到 { .. } 块中。（但是不会进行声明提升）</p>
+<p>立即执行<strong>函数表达式</strong>：函数声明 function(){ .. }，函数表达式 (function(){ .. })()。函数声明绑定在所处作用域中，而函数表达式将函数名隐藏在自身函数表达式中（{ .. }部分）。</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>将函数类型的值进行传递，它都会持有对原始定义作用域的引用。</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">
+function wait(message){
+    setTimeout(function timer(){
+        console.log(message);
+    },1000);
+}
+
+wait("Hello closure!");<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>将一个内部函数（名为 timer ）<strong>传递</strong>给 setTimeout(..)。timer 具有涵盖 wait(..)作用域的闭包，因此还保有对变量 message 的引用。<br>wait(..) 执行 1000 毫秒后，它的内部作用域不会消失，timer 函数依然保有 wait(..) 作用域的闭包。</p>
+</blockquote>
+<h2 id="闭包与循环"><a href="#闭包与循环" class="headerlink" title="闭包与循环"></a>闭包与循环</h2><pre class="line-numbers language-JavaScript"><code class="language-JavaScript">for(var i = 0;i != 5;i++){
+    setTimeout(function timer(){
+        console.log(i);
+    },1000);
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Output: 5 5 5 5 5</p>
+</blockquote>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">for(var i = 0;i != 5;i++){
+    (function(){
+        setTimeout(function timer(){
+            console.log(i);
+        },1000);
+    })();
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Output: 5 5 5 5 5</p>
+</blockquote>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">for(var i = 0;i != 5;i++){
+    (function(j){
+        setTimeout(function timer(){
+            console.log(j);
+        },1000);
+    })(i);
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Output: 0 1 2 3 4</p>
+</blockquote>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">for(var i = 0;i != 5;i++){
+    let j = i;
+    setTimeout(function timer(){
+        console.log(j);
+    },1000);
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Output: 0 1 2 3 4</p>
+</blockquote>
+<p>let 循环：let 可以将声明绑定在 for(){ .. } 内部，并且在<strong>每次迭代都进行重新绑定</strong>。</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">for(let i = 0;i != 5;i++){
+    setTimeout(function timer(){
+        console.log(i);
+    },1000);
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>Output: 0 1 2 3 4</p>
+</blockquote>
+</p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://trzeth.github.io/2020/09/08/作用域和闭包/%20t' target="_blank" rel="noopener"s Dream Hole%20作用域和闭包" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/2020/09/08/this%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" title="this动态绑定"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: this动态绑定</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/2020/07/13/hello-world/" title="Hello World">下一篇: Hello World&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2020&nbsp;<a target="_blank" href="https://trzeth.github.io" rel="noopener noreferrer">Trzeth</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
