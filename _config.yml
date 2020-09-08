@@ -127,7 +127,7 @@ feed:
 prism_plugin:
   mode: "preprocess"
   theme: "default"
-  line_number: true
+  line_number: false
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
